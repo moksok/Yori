@@ -1,0 +1,226 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>Register</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Registration page for YORI " name="description" />
+    <meta content="" name="author" />
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="../Assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../Assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="../Assets/global/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="../Assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <!--<link href="../Assets/pages/css/login-4.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="~/Assets/pages/css/login-4.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <!-- END THEME LAYOUT STYLES -->
+    <!--<link rel="shortcut icon" href="favicon.ico" />-->
+</head>
+<!-- END HEAD -->
+
+<body class="login" ng-app="YORI">
+    <!-- BEGIN LOGO -->
+    <div class="logo">
+        <a href="/">
+            <img src="https://s3-us-west-2.amazonaws.com/seokbucket/yori/yorilogo_registration_login.png"
+                 alt="" />
+        </a>
+    </div>
+    <!-- END LOGO -->
+    <!-- BEGIN LOGIN -->
+    <div class="content"ng-controller="registrationController as reg">        
+        <!-- BEGIN REGISTRATION FORM -->
+        <form class="register-form" ng-submit="reg.submitRegistration()" id="userRegistrationForm" name="reg.userRegistrationForm" novalidate>
+            <h3>Sign Up For Yori</h3>
+            <p> Please enter your full name (optional) </p>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">First Name</label>
+                <div class="input-icon">
+                    <i class="fa fa-font"></i>
+                    <input class="form-control placeholder-no-fix"
+                            type="text"
+                            placeholder="First Name"
+                            name="firstname"
+                            ng-model="reg.newUser.Firstname"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Last Name</label>
+                <div class="input-icon">
+                    <i class="fa fa-font"></i>
+                    <input class="form-control placeholder-no-fix"
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastname"
+                            ng-model="reg.newUser.Lastname"/>
+                </div>
+            </div>
+            <p> Please enter a username, email and password </p>
+
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Username</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control ng-class=:{'error': reg.showRegistrationError && !reg.userRegistrationForm.username.$valid}"
+                            type="text"
+                            autocomplete="off"
+                            placeholder="Username"
+                            name="username"
+                            id="username"
+                            ng-model="reg.newUser.Username"
+                            required/>
+                </div>
+
+                <div role="alert" class="help-inline error">
+                    <!-- dashboard.showNewEmployeeErrors is set to true the first time the form is submitted. this happens in the dashboard.addEmployee() function. -->
+                    <span class="error" ng-show="reg.showRegistrationError && reg.userRegistrationForm.username.$error.required">Username is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                <label class="control-label visible-ie8 visible-ie9">Email</label>
+                <div class="input-icon">
+                    <i class="fa fa-envelope"></i>
+                    <input class="form-control ng-class:{'error': reg.showRegistrationError && !reg.userRegistrationForm.email.$valid}"
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            id="email"
+                            ng-model="reg.newUser.Email"
+                            required/>
+                </div>
+
+                <div role="alert" class="help-inline error">
+                    <!-- dashboard.showNewEmployeeErrors is set to true the first time the form is submitted. this happens in the dashboard.addEmployee() function. -->
+                    <span class="error" ng-show="reg.showRegistrationError && reg.userRegistrationForm.email.$error.required">Email is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                    <span class="error" ng-show="reg.showRegistrationError && reg.userRegistrationForm.email.$error.email">Must be a valid email address</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Password</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input class="form-control ng-class:{'error': reg.showRegistrationError && !reg.userRegistrationForm.userName.$valid}""
+                            type="password"
+                            autocomplete="off"
+                            id="register_password"
+                            placeholder="Password"
+                            name="password"
+                            ng-model="reg.newUser.Password"
+                            ng-minlength="6"
+                            required/>
+                </div>
+
+                <div role="alert" class="help-inline error">
+                    <!-- dashboard.showNewEmployeeErrors is set to true the first time the form is submitted. this happens in the dashboard.addEmployee() function. -->
+                    <span class="error" ng-show="reg.showRegistrationError && reg.userRegistrationForm.password.$error.required">Password is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                    <span class="error" ng-show="reg.showRegistrationError && reg.userRegistrationForm.password.$error.minlength">Too short! Password must be at least 6 characters</span>
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div id="register_tnc_error"> </div>
+            </div>
+            <p>Already have an account?</p>
+            <div class="form-actions">
+                <!--<button id="register-back-btn" type="button" class="btn red btn-outline"> Log In </button>-->
+                <a href="/login/index" class="btn red btn-outline"> Log In </a>
+                <button type="submit" id="register-submit-btn" class="btn green pull-right"> Sign Up </button>
+            </div>
+        </form>
+        <!-- END REGISTRATION FORM -->
+    </div>
+    <!-- END LOGIN -->
+    <!-- BEGIN COPYRIGHT -->
+    <div class="copyright"> 2016 &copy; Yori - Created by Michael Sok </div>
+    <!-- END COPYRIGHT -->
+    <!--[if lt IE 9]>
+    <script src="../assets/global/plugins/respond.min.js"></script>
+    <script src="../assets/global/plugins/excanvas.min.js"></script>
+    <script src="../assets/global/plugins/ie8.fix.min.js"></script>
+    <![endif]-->
+
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="../Assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="../Assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../Assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="../Assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <!--<script src="../Assets/pages/scripts/login-4.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <!-- END THEME LAYOUT SCRIPTS -->
+
+    <!-- ANGULAR -->
+    <script type="text/javascript">
+        var APPNAME = 'YORI';
+    </script>
+    <script src="~/Scripts/bower_components/angular/angular.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-toastr/dist/angular-toastr.min.js"></script>
+    <script src="~/Scripts/bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+    <script src="~/Assets/global/plugins/dropzone/angular-dropzone.js" type="text/javascript"></script>
+    <script src="~/Scripts/sabio.js"></script>
+    <script src="~/Scripts/sabio/sabio.module.js"></script>
+    <script src="~/Scripts/sabio/core/controllers/base.controller.js"></script>
+    <script src="~/Scripts/sabio/core/services/alert.service.js"></script>
+    <script src="~/Scripts/sabio/core/services/base.service.js"></script>
+    <script src="~/Scripts/sabio/core/services/baseHttp.service.js"></script>
+    <script src="~/Scripts/sabio/core/services/systemEvent.service.js"></script>
+
+    <script src="~/Scripts/sabio/yori/registration/controllers/registration.js"></script>
+    <script src="~/Scripts/sabio/yori/services/registrationService.js"></script>
+    <script src="~/Scripts/sabio.services.registration.js"></script>
+</body>
+
+</html>

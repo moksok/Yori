@@ -1,0 +1,155 @@
+﻿
+<div class="page-content">
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <!-- END PAGE TITLE -->
+        <!-- BEGIN PAGE TOOLBAR -->
+        <!-- END PAGE TOOLBAR -->
+    </div>
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE BREADCRUMB -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="/portal/home">Dashboard</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span class="active">My Profile</span>
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMB -->
+    <!-- BEGIN PAGE BASE CONTENT -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PROFILE SIDEBAR -->
+            <div class="profile-sidebar">
+                <!-- PORTLET MAIN -->
+                <div class="portlet light profile-sidebar-portlet bordered">
+                    <!-- SIDEBAR USERPIC -->
+                    <div class="profile-userpic">
+                        <img ng-if="mpc.currentUser.mediaId > 0" src="{{mpc.currentUser.mediaId.url}}" class="img-responsive" alt="profilepicture">
+                        <img ng-if="mpc.currentUser.mediaId == 0" src="https://s3-us-west-2.amazonaws.com/seokbucket/yori/default-avatar.png" class="img-responsive" alt="profilepicture">
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name"> <span ng-bind="mpc.editCurrentUser.FirstName">{{mpc.currentUser.firstName}}</span> <span ng-bind="mpc.editCurrentUser.LastName">{{mpc.currentUser.lastName}}</span></div>
+                        <div class="profile-usertitle-job"> {{mpc.currentUser.userName}} </div>
+                    </div>
+                    <!-- END SIDEBAR USER TITLE -->
+                    <!-- SIDEBAR BUTTONS -->
+                    <div class="profile-userbuttons">
+                        <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                        <button type="button" class="btn btn-circle red btn-sm">Message</button>
+                    </div>
+                    <!-- END SIDEBAR BUTTONS -->
+                    <!-- SIDEBAR MENU -->
+                    <div class="profile-usermenu">
+
+                    </div>
+                    <!-- END MENU -->
+                </div>
+                <!-- END PORTLET MAIN -->
+                <!-- PORTLET MAIN -->
+                <div class="portlet light bordered">
+                    <!-- STAT -->
+                    <div class="row list-separated profile-stat">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 37 </div>
+                            <div class="uppercase profile-stat-text"> Recipes </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 51 </div>
+                            <div class="uppercase profile-stat-text"> Following </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 61 </div>
+                            <div class="uppercase profile-stat-text"> Followers </div>
+                        </div>
+                    </div>
+                    <!-- END STAT -->
+                    <div class="taglinebox" style="word-wrap: break-word;">
+                        <h4 class="profile-desc-title">About {{mpc.currentUser.firstName}} {{mpc.currentUser.lastName}} </h4>
+                        <span class="profile-desc-text" ng-bind="mpc.editCurrentUser.Tagline"> {{mpc.currentUser.tagline}} </span> 
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-globe"></i>
+                            <a href="http://www.keenthemes.com">www.keenthemes.com</a>
+                        </div>
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-twitter"></i>
+                            <a href="http://www.twitter.com/keenthemes/">@keenthemes</a>
+                        </div>
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-facebook"></i>
+                            <a href="http://www.facebook.com/keenthemes/">keenthemes</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PORTLET MAIN -->
+            </div>
+            <!-- END BEGIN PROFILE SIDEBAR -->
+            <!-- BEGIN PROFILE CONTENT -->
+            <div class="profile-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption caption-md">
+                                    <i class="icon-globe theme-font hide"></i>
+                                    <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <!-- PERSONAL INFO TAB -->
+                                    <div class="tab-pane active" id="tab_1_1">
+                                        <form role="form" ng-submit="mpc.editCurrentUserInfo(editCurrentUserForm.$valid)" id="editCurrentUserForm" name="mpc.editCurrentUserForm" novalidate>
+                                            <div class="form-group">
+                                                <label class="control-label">First Name</label>
+                                                <input type="text" 
+                                                       placeholder="Enter your first name" 
+                                                       class="form-control"
+                                                       ng-model="mpc.editCurrentUser.FirstName"
+                                                       id="FirstName"
+                                                       name="FirstName" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Last Name</label>
+                                                <input type="text"
+                                                       placeholder="Enter your last name" 
+                                                       class="form-control"
+                                                       ng-model="mpc.editCurrentUser.LastName"
+                                                       id="LastName"
+                                                       name="LastName" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">About</label>
+                                                <textarea class="form-control"
+                                                          rows="5" 
+                                                          placeholder="Write something about yourself"
+                                                          ng-max-length="140"
+                                                          ng-model="mpc.editCurrentUser.Tagline"
+                                                          id="Tagline"
+                                                          name="Tagline"></textarea>
+                                                <p ng-show="mpc.editCurrentUserForm.Tagline.$error.maxlength" class="help-block">Tagline is over 140 characters.</p>
+                                                <span>{{140 - mpc.editCurrentUser.Tagline.length}} characters left</span>
+                                            </div>
+                                            <br/>
+                                            <div class="margiv-top-10">
+                                                <button class="btn green" type="submit"> Save Changes </button>
+                                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PROFILE CONTENT -->
+        </div>
+    </div>
+    <!-- END PAGE BASE CONTENT -->
+</div>

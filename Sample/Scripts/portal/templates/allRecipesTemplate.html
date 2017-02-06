@@ -1,0 +1,130 @@
+﻿<div class="page-content">
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>
+                All Recipes
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+        <!-- BEGIN PAGE TOOLBAR -->
+        <!-- END PAGE TOOLBAR -->
+    </div>
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE BREADCRUMB -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="/portal/home">Dashboard</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/allrecipes" ng-click="arc.viewSingleRecipeContainer = false">All Recipes</a>
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMB -->
+    <!-- BEGIN PAGE BASE CONTENT -->
+    <div class="search-page search-content-1">
+        <div class="search-bar bordered" ng-show="!arc.viewSingleRecipeContainer">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for..." ng-model="searchRecipe">
+                        <span class="input-group-btn">
+                            <button class="btn green-dark uppercase bold" type="button">Search</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" ng-show="!arc.viewSingleRecipeContainer">
+                <div class="search-container bordered">
+                    <ul>
+                        <li class="search-item clearfix" ng-repeat="recipe in arc.allRecipes | filter:searchRecipe">
+                            <a ng-click="arc.viewSingleRecipe(recipe.id)">
+                                <img ng-if="!recipe.media.url" src="https://s3-us-west-2.amazonaws.com/seokbucket/yori/yorilogo_600x600.png" />
+                                <img ng-if="recipe.media.url" src="{{recipe.media.url}}" style="width: 100px; height: 100px;" />
+                            </a>
+                            <div class="search-content">
+                                <h2 class="search-title">
+                                    <a ng-click="arc.viewSingleRecipe(recipe.id)">{{recipe.name}}</a>
+                                </h2>
+                                <p class="search-desc"> {{recipe.description}} </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="blog-page blog-content-2" ng-show="arc.viewSingleRecipeContainer == true">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="blog-single-content bordered blog-container">
+
+                        <div class="blog-single-head">
+                            <h1 class="blog-single-head-title">{{arc.singleRecipe.name}}</h1>
+
+                            <div class="blog-single-head-date">
+                                <i class="icon-calendar font-blue"></i>
+                                <a style="cursor: default">{{arc.singleRecipe.createdDate | date}}</a>
+
+                            </div>
+                        </div>
+
+                        <div class="blog-single-img">
+                            <img src="{{arc.singleRecipe.media.url}}" />
+                        </div>
+                        <div class="blog-single-foot">
+                            <ul class="blog-post-tags">
+                                <li class="uppercase">
+
+                                    <a ng-disabled="true"><i class="fa fa-clock-o"></i>Prep Time: <strong style="font-size:1.4em; color: black; cursor: default">{{arc.singleRecipe.preptime}}</strong> min</a>
+                                </li>
+                                <li class="uppercase">
+
+                                    <a ng-disabled="true"><i class="fa fa-clock-o"></i>Total Time:     <strong style="font-size:1.4em; color: black; cursor: default">{{arc.singleRecipe.totaltime}}</strong> min</a>
+                                </li>
+                                <li class="uppercase">
+
+                                    <a ng-disabled="true"><i class="fa fa-users"></i>Number of Servings: <strong style="font-size:1.4em; color: black; cursor: default">{{arc.singleRecipe.numberOfServings}}</strong></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-simple font-black bg-white" style="padding-left: 0px;">
+                                <div class="list-head-title-container">
+                                    <h3 class="list-title">Ingredients</h3>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-simple">
+                                <ul>
+                                    <li class="mt-list-item" ng-repeat="ingredient in arc.singleRecipe.ingredients">
+                                        <div class="list-icon-container done">
+                                            <i class="icon-check"></i>
+                                        </div>
+                                        <div class="list-datetime"> {{ingredient.quantity}} {{ingredient.measurementType}}</div>
+                                        <div class="list-item-content">
+                                            <h3 class="uppercase">
+                                                <a ng-disabled="true">{{ingredient.name}}</a>
+                                            </h3>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br />
+                        <h3>Directions</h3>
+                        <div class="blog-single-desc">
+                            <p>{{arc.singleRecipe.directions}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE BASE CONTENT -->
+</div>

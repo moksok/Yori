@@ -1,0 +1,28 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <h2 class="modal-title">Add Your Picture</h2>
+    </div>
+    <div class="modal-body">
+
+        <div class="dropzone dropzone-file-area"
+                      method="post"
+                      action="/api/media"
+                      enctype="multipart/form-data"
+                      ng-dropzone
+                      dropzone="mc.dropzoneCallbacks"
+                      dropzone-config="mc.dzOptions"
+                      event-handlers="{
+                                'addedfile': mc.dzAddedFile,
+                                'error': mc.dzError,
+                                'sending': mc.dzSending,
+                                'success': mc.dzSuccess,
+                                 }" id="my-dropzone">
+            <h3 class="sbold">Drop files here or click to upload</h3>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="mc.ok()">OK</button>
+        <button class="btn btn-warning" ng-click="mc.cancel()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,459 @@
+﻿<div class="page-content">
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>
+                My Recipes
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+        <!-- BEGIN PAGE TOOLBAR -->
+        <!-- END PAGE TOOLBAR -->
+    </div>
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE BREADCRUMB -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="/portal/home">Dashboard</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/myrecipes" ng-click="mrc.defaultMyRecipesView()">My Recipes</a>
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMB -->
+    <!-- BEGIN PAGE BASE CONTENT -->
+    <div class="search-page search-content-1">
+        <div class="search-bar bordered" ng-show="!mrc.addNewRecipeContainer && !mrc.viewSingleRecipeContainer && !mrc.updateRecipeContainer">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for..." ng-model="searchRecipe">
+                        <span class="input-group-btn">
+                            <button class="btn green-dark uppercase bold" type="button">Search</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn red uppercase bold" id="addnewrecipebutton" type="button" style="" ng-click="mrc.addNewRecipeButton()">New Recipe</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" ng-show="!mrc.addNewRecipeContainer && !mrc.viewSingleRecipeContainer && !mrc.updateRecipeContainer">
+                <div class="search-container bordered">
+                    <ul>
+                        <li class="search-item clearfix" ng-repeat="recipe in mrc.myRecipes | filter:searchRecipe">
+                            <a ng-click="mrc.viewSingleRecipe(recipe.id)">
+                                <img ng-if="!recipe.media.url" src="https://s3-us-west-2.amazonaws.com/seokbucket/yori/yorilogo_600x600.png" />
+                                <img ng-if="recipe.media.url" src="{{recipe.media.url}}" style="width: 100px; height: 100px;"/>
+                            </a>
+                            <div class="search-content">
+                                <h2 class="search-title">
+                                    <a ng-click="mrc.viewSingleRecipe(recipe.id)">{{recipe.name}}</a>
+                                </h2>
+                                <p class="search-desc"> {{recipe.description}} </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Add recipe container-->
+            <div id="addrecipecontainer" ng-show="mrc.addNewRecipeContainer == true">
+                <div class="col-md-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-speech font-red"></i>
+                                <span class="caption-subject bold font-red uppercase">Add your recipe!</span>
+                            </div>
+                            <div class="actions">
+                                <!--
+                                <a ng-click="" class="btn btn-circle blue-steel btn-outline">
+                                    <i class="fa fa-plus"></i> Add Pictures!
+                                </a>
+                                -->
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <form role="form" ng-submit="mrc.submitNewRecipe()" id="submitRecipeForm" name="mrc.submitRecipeForm" novalidate>
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text"
+                                           placeholder="A Can of Tuna"
+                                           class="form-control"
+                                           ng-model="mrc.newRecipe.name"
+                                           name="name"
+                                           id="name"
+                                           required />
+                                </div>
+                                <div role="alert" class="help-inline error">
+                                    <span class="error" ng-show="mrc.showRecipeError && mrc.submitRecipeForm.name.$error.required">Name is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Description</label>
+                                    <input class="form-control"
+                                           type="text"
+                                           placeholder="It's delicious!!"
+                                           ng-model="mrc.newRecipe.description"
+                                           name="description"
+                                           id="description"
+                                           required />
+                                </div>
+                                <div role="alert" class="help-inline error">
+                                    <span class="error" ng-show="mrc.showRecipeError && mrc.submitRecipeForm.description.$error.required">Description is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4 miscrecipeinput" id="miscinputformleft">
+                                        <label class="control-label">Prep Time</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               placeholder="Enter minutes"
+                                               ng-model="mrc.newRecipe.preptime"
+                                               name="preptime"
+                                               id="preptime" />
+                                    </div>
+
+                                    <div class="col-md-4 miscrecipeinput">
+                                        <label class="control-label">Total Time</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               placeholder="Enter minutes"
+                                               ng-model="mrc.newRecipe.totaltime"
+                                               name="totaltime"
+                                               id="totaltime" />
+                                    </div>
+                                    <div class="col-md-4 miscrecipeinput" id="miscinputformright">
+                                        <label class="control-label">Number of Servings</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               placeholder="Enter number of people"
+                                               ng-model="mrc.newRecipe.numberofservings"
+                                               name="numberofservings"
+                                               id="numberofservings" />
+                                    </div>
+                                </div>
+                                <div class="form-group mt-repeater">
+                                    <div data-repeater-list="group-c" ng-repeat="ingredient in mrc.newRecipe.ingredients">
+                                        <div data-repeater-item class="mt-repeater-item">
+                                            <div class="row mt-repeater-row">
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Ingredient</label>
+                                                    <input type="text" placeholder="Salted Tuna" class="form-control" ng-model="ingredient.name" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">Quantity</label>
+                                                    <input type="number" min="0" placeholder="3" class="form-control" ng-model="ingredient.quantity" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mt-repeater-input">
+                                                        <label class="control-label">Measurement</label>
+                                                        <br />
+                                                        <select name="select-input" class="form-control" ng-model="ingredient.measurementtype" ng-options="mtype.value as mtype.type for mtype in mrc.measurementtype">
+                                                            <option value="mtype.value[$index]"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a ng-click="mrc.removeIngredient($index)" data-repeater-delete class="btn btn-danger mt-repeater-delete">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a ng-click="mrc.addIngredient()" data-repeater-create class="btn btn-info mt-repeater-add">
+                                        <i class="fa fa-plus"></i> Add Ingredients
+                                    </a>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="control-label">Directions</label>
+                                    <textarea class="form-control"
+                                              rows="20"
+                                              placeholder="Sharpen those knives!"
+                                              ng-model="mrc.newRecipe.directions"
+                                              name="directions"
+                                              id="directions"></textarea>
+                                </div>
+                                <div class="margin-top-10">
+                                    <button type="submit" class="btn red">Submit</button>
+                                    <a ng-click="mrc.addNewRecipeContainer = false" class="btn default">Cancel </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update recipe container-->
+            <div id="updaterecipecontainer" ng-show="mrc.updateRecipeContainer == true">
+                <div class="col-md-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-speech font-blue"></i>
+                                <span class="caption-subject bold font-blue uppercase">Update your recipe!</span>
+                            </div>
+                            <div class="actions">
+
+                                <a ng-click="mrc.openPictureModal(mrc.singleRecipe.id)" class="btn btn-circle blue-steel btn-outline">
+                                    <i class="fa fa-plus"></i> Add Pictures!
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <form role="form" ng-submit="mrc.submitUpdatedRecipe(mrc.singleRecipe.id)" id="updateRecipeForm" name="mrc.updateRecipeForm" novalidate>
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text"
+                                           ng-value="mrc.singleRecipe.name"
+                                           class="form-control"
+                                           ng-model="mrc.updatedRecipe.name"
+                                           name="updatedname"
+                                           id="updatedname"
+                                           required />
+                                </div>
+                                <div role="alert" class="help-inline error">
+                                    <span class="error" ng-show="mrc.showRecipeError && mrc.updateRecipeForm.name.$error.required">Name is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Description</label>
+                                    <input class="form-control"
+                                           type="text"
+                                           ng-value="mrc.singleRecipe.description"
+                                           ng-model="mrc.updatedRecipe.description"
+                                           name="updateddescription"
+                                           id="updateddescription"
+                                           required />
+                                </div>
+                                <div role="alert" class="help-inline error">
+                                    <span class="error" ng-show="mrc.showRecipeError && mrc.updateRecipeForm.description.$error.required">Description is required</span> <!-- errors for specific fields can be accessed with the syntax [form name].[field name].$error.[validator name] -->
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4 miscrecipeinput" id="miscinputformleft">
+                                        <label class="control-label">Prep Time</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               ng-value="mrc.singleRecipe.preptime"
+                                               ng-model="mrc.updatedRecipe.preptime"
+                                               name="updatedpreptime"
+                                               id="updatedpreptime" />
+                                    </div>
+
+                                    <div class="col-md-4 miscrecipeinput">
+                                        <label class="control-label">Total Time</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               ng-value="mrc.singleRecipe.totaltime"
+                                               ng-model="mrc.updatedRecipe.totaltime"
+                                               name="updatedtotaltime"
+                                               id="updatedtotaltime" />
+                                    </div>
+                                    <div class="col-md-4 miscrecipeinput" id="miscinputformright">
+                                        <label class="control-label">Number of Servings</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               min="0"
+                                               ng-value="mrc.singleRecipe.numberOfServings"
+                                               ng-model="mrc.updatedRecipe.numberofservings"
+                                               name="updatednumberofservings"
+                                               id="updatednumberofservings" />
+                                    </div>
+                                </div>
+                                <div class="form-group mt-repeater">
+
+
+                                    <div data-repeater-list="group-c" ng-repeat="(i,ingredient) in mrc.singleRecipe.ingredients track by $index">
+                                        <div data-repeater-item class="mt-repeater-item">
+                                            <div class="row mt-repeater-row">
+                                                <div class="col-md-5">
+                                                    <label class="control-label">Ingredient</label>
+                                                    <input type="text" ng-value="ingredient.name" class="form-control" ng-model="mrc.updatedIngredient[i].name" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">Quantity</label>
+                                                    <input type="number" min="0" ng-value="ingredient.quantity" class="form-control" ng-model="mrc.updatedIngredient[i].quantity" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mt-repeater-input">
+                                                        <label class="control-label">Measurement</label>
+                                                        <br />
+                                                        <select name="select-input" class="form-control" ng-model="mrc.updatedIngredient[i].measurementType" ng-options="mtype.value as mtype.type for mtype in mrc.measurementtype">
+                                                            <!--<option ng-value="ingredient.measurementType"></option>-->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a ng-click="mrc.updateIngredient(ingredient.id, $index)" class="btn btn-info mt-repeater-delete">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+
+                                                    <a ng-click="mrc.deleteIngredient(ingredient.id, $index)" data-repeater-delete class="btn btn-danger mt-repeater-delete">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group mt-repeater">
+                                        <div data-repeater-list="group-c" ng-repeat="ingredient in mrc.updatedRecipe.ingredients">
+                                            <div data-repeater-item class="mt-repeater-item">
+                                                <div class="row mt-repeater-row">
+                                                    <div class="col-md-5">
+                                                        <label class="control-label">Ingredient</label>
+                                                        <input type="text" placeholder="Salted Tuna" class="form-control" ng-model="ingredient.name" />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="control-label">Quantity</label>
+                                                        <input type="number" placeholder="3" class="form-control" ng-model="ingredient.quantity" />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">Measurement</label>
+                                                            <br />
+                                                            <select name="select-input" class="form-control" ng-model="ingredient.measurementtype" ng-options="mtype.value as mtype.type for mtype in mrc.measurementtype">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <a ng-click="mrc.removeNewIngredientForRecipe($index)" data-repeater-delete class="btn btn-danger mt-repeater-delete">
+                                                            <i class="fa fa-close"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a ng-click="mrc.addNewIngredientForRecipe()" data-repeater-create class="btn btn-info mt-repeater-add">
+                                        <i class="fa fa-plus"></i> Add Ingredients
+                                    </a>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="control-label">Directions</label>
+                                    <textarea class="form-control"
+                                              rows="20"
+                                              ng-model="mrc.updatedRecipe.directions"
+                                              ng-value="mrc.singleRecipe.directions"
+                                              name="directions"
+                                              id="directions"></textarea>
+                                </div>
+                                <div class="margin-top-10">
+                                    <button type="submit" class="btn blue">Submit</button>
+                                    <a ng-click="mrc.updateRecipeContainer = false" class="btn default">Cancel </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- View single recipe container-->
+        <div class="blog-page blog-content-2" ng-show="mrc.viewSingleRecipeContainer == true">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="blog-single-content bordered blog-container">
+
+                        <div class="page-toolbar">
+                            <div class="btn-group btn-theme-panel" style="float:right;">
+                                <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-settings"></i>
+                                </a>
+                                <div class="dropdown-menu theme-panel pull-right dropdown-custom hold-on-click" style="min-width: 200px;">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <ul class="theme-colors">
+                                                <li class="theme-color theme-color-default active" data-theme="red" ng-click="mrc.deleteRecipe(mrc.singleRecipe.id)">
+                                                    <i class="fa fa-minus-circle" aria-hidden="true" style="color:#e7505a"></i>
+                                                    <span class="theme-color-name">DELETE</span>
+                                                </li>
+                                                <li class="theme-color theme-color-light " data-theme="light" ng-click="mrc.editRecipe()">
+                                                    <i class="fa fa-pencil-square" aria-hidden="true" style="color:#3598dc"></i>
+                                                    <span class="theme-color-name">EDIT</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="blog-single-head">
+                            <h1 class="blog-single-head-title">{{mrc.singleRecipe.name}}</h1>
+
+                            <div class="blog-single-head-date">
+                                <i class="icon-calendar font-blue"></i>
+                                <a style="cursor: default">{{mrc.singleRecipe.createdDate | date}}</a>
+
+                            </div>
+                        </div>
+
+                        <div class="blog-single-img">
+                            <img src="{{mrc.singleRecipe.media.url}}" />
+                        </div>
+                        <div class="blog-single-foot">
+                            <ul class="blog-post-tags">
+                                <li class="uppercase">
+                                    
+                                    <a ng-disabled="true"><i class="fa fa-clock-o"></i>Prep Time: <strong style="font-size:1.4em; color: black; cursor: default">{{mrc.singleRecipe.preptime}}</strong> min</a>
+                                </li>
+                                <li class="uppercase">
+                                    
+                                    <a ng-disabled="true"><i class="fa fa-clock-o"></i>Total Time:     <strong style="font-size:1.4em; color: black; cursor: default">{{mrc.singleRecipe.totaltime}}</strong> min</a>
+                                </li>
+                                <li class="uppercase">
+                                    
+                                    <a ng-disabled="true"><i class="fa fa-users"></i>Number of Servings: <strong style="font-size:1.4em; color: black; cursor: default">{{mrc.singleRecipe.numberOfServings}}</strong></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-simple font-black bg-white" style="padding-left: 0px;">
+                                <div class="list-head-title-container">
+                                    <h3 class="list-title">Ingredients</h3>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-simple">
+                                <ul>
+                                    <li class="mt-list-item" ng-repeat="ingredient in mrc.singleRecipe.ingredients">
+                                        <div class="list-icon-container done">
+                                            <i class="icon-check"></i>
+                                        </div>
+                                        <div class="list-datetime"> {{ingredient.quantity}} {{ingredient.measurementType}}</div>
+                                        <div class="list-item-content">
+                                            <h3 class="uppercase">
+                                                <a ng-disabled="true">{{ingredient.name}}</a>
+                                            </h3>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br />
+                        <h3>Directions</h3>
+                        <div class="blog-single-desc">
+                            <p>{{mrc.singleRecipe.directions}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE BASE CONTENT -->
+</div>
